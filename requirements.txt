@@ -1,0 +1,9 @@
+json
+google-colab
+pandas
+spacy
+scikit-learn
+tqdm
+numpy
+matplotlib
+sentence-transformers
