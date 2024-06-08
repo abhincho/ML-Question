@@ -1,0 +1,16 @@
+pandas
+numpy
+sklearn
+string
+spacy
+en_core_web_lg
+nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+subprocess
+tqdm
+transformers
+torch
+
+
