@@ -1,0 +1,37 @@
+#Thinking-process:
+Let us instead of a machine we ourselves want to make a time line of events,we follow the following steps:
+##Manual-Process
+1. Collecting data relevant to the event from already collected data (news papers, websites etc)
+2. Storing the data
+3. Finding relevant events
+4. Grouping related events together
+5. Giving a common name for all the related events so that we can find the timeline
+6. Ordering the events in all the relevant event (more specifically finding the start date and end date for the timeline)
+7. Making the timeline
+
+We follow similar steps with the machine too. 
+##Machine-Process
+step 1: loading the already collected data and preprocessing it 
+step 2: storing the preprocesseed data
+(Since it is a machine we do storing and clustering in same time and then finding relavant data since it is easier to find whats elated in less number of clusters rather than finding in all the data)
+step 4 :grouping relevant events into one using clusters
+step 5: Giving titles to the cllusters to easly identify which clusters are relevant
+step 3 :  filtering the relevant events
+step 6: finding start and end date of events
+step 7: making the timeline
+
+## Code Explanation
+### Step 1: Loading Libraries and Data
+The code loads all the required libraries to do the necessary tasks.
+### Step 2: Data Preprocessing
+The code loads the dataset from drive, stores it in pandas dataframe, and then drops null values and duplicates to reduce the noise. The code only stores `title` and `scrapedDate` to use the storage better.
+### Step 4: Clustering
+The code divides the data into clusters after storing the data as vectors using DBSCAN algorithm since it doesn't require us to specify the number of vectors.
+### Step 5: Naming Clusters
+We give names to clusters using the pretrained model sentence-transformers.
+### Step 3: Filtering Relevant Events
+We use keywords `Israel`, `Hamas`, and `war` to filter the relevant data.
+### Step 6: Finding Start and End Dates
+To find start date and end date of event, we fix a particular cluster and find its end and start date for all cluster labels in relevant events.
+### Step 7: Making the Timeline
+We then make a timeline out of them and print it in "" format and formalize the above.
