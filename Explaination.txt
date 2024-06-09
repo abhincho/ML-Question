@@ -1,0 +1,157 @@
+Step 1: Importing Libraries
+
+import pandas as pd
+import numpy as np
+import json
+import re
+
+Purpose: Import necessary libraries for data manipulation (pandas and numpy), handling JSON data (json), and regular expression operations (re).
+
+Step 2: Loading JSON Data into a DataFrame
+
+df = pd.read_json(r'/content/drive/MyDrive/news.article.json')
+print(df.head())
+
+Purpose: Load the JSON file into a pandas DataFrame for easier manipulation and display the first few rows to understand the structure of the data.
+
+Step 3: Accessing and Normalizing JSON Data
+
+json_data = df.to_dict(orient='records')
+pd.json_normalize(json_data)
+
+Purpose: Convert the DataFrame to a list of dictionaries (json_data). The normalization step is intended to flatten the nested JSON structure if necessary.
+
+Step 4: Combining Columns for Context
+
+df['context'] = df['title'] + '. ' + df['articleBody']
+
+Purpose: Create a new column, context, which concatenates the title and articleBody columns to provide a full context of the news article.
+
+Step 5: Filtering Data Based on Keywords
+
+keywords = ["Israel", "Hamas", "Gaza", "conflict", "war", "ceasefire", "rocket", "air strike", "military", "Palestinian"]
+df = df[df['context'].apply(lambda x: any(keyword.lower() in x.lower() for keyword in keywords))]
+print(df)
+
+Purpose: Filter the articles to retain only those that mention any of the specified keywords. This step ensures that we focus on relevant articles related to a specific topic (e.g., the Israel-Palestine conflict).
+
+Step 6: Cleaning Text
+
+def clean_text(text):
+    cleaned_text = re.sub(r'\s+', ' ', text)  # Remove extra whitespace
+    cleaned_text = re.sub(r'[^\w\s]', '', cleaned_text)  # Remove special symbols
+    return cleaned_text.strip()
+
+for entry in json_data:
+    for key in entry:
+        if isinstance(entry[key], str):
+            entry[key] = clean_text(entry[key])
+
+with open('cleaned_data.json', 'w') as file:
+    json.dump(json_data, file, indent=4)
+
+Purpose: Define a function to clean text by removing extra whitespace and special symbols. Iterate through the JSON data to clean each string field and save the cleaned data to a new JSON file.
+
+Step 7: Further Cleaning and Collecting Context Data
+
+filtered_df['context'] = filtered_df['context'].apply(clean_text)
+cleaned_context_data = filtered_df['context'].tolist()
+print(cleaned_context_data[:5])
+
+Purpose: Apply the cleaning function to the context column of the filtered DataFrame and collect the cleaned context data into a list for further processing.
+
+Step 8: Segmenting Long Documents
+
+def segment_document(document, max_tokens=512):
+    segments = []
+    words = document.split()
+    current_segment = ''
+    current_length = 0
+
+    for word in words:
+        if current_length + len(word) + 1 <= max_tokens:
+            current_segment += ' ' + word
+            current_length += len(word) + 1
+        else:
+            segments.append(current_segment.strip())
+            current_segment = word
+            current_length = len(word)
+
+    segments.append(current_segment.strip())
+    return segments
+
+document = "This is a long document that needs to be segmented into smaller chunks to fit into the token limit of BERT."
+segments = segment_document(document)
+print(segments)
+
+Purpose: Define a function to segment long documents into smaller chunks, each containing a maximum of 512 tokens (suitable for BERT). The example demonstrates segmenting a sample document.
+
+Step 9: Finding Relevant Documents Using TF-IDF
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+def find_relevant_documents(docs, question):
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(docs + [question])
+    similarity_scores = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
+    top_candidates_indices = similarity_scores.argsort()[0][-3:][::-1]
+    top_candidates = [docs[i] for i in top_candidates_indices]
+    return top_candidates
+
+docs = ["Document 1 text", "Document 2 text", "Document 3 text"]
+question = "Input question text"
+relevant_documents = find_relevant_documents(docs, question)
+print("Top Relevant Documents:")
+for i, doc in enumerate(relevant_documents, start=1):
+    print(f"Document {i}: {doc}")
+
+Purpose: Define a function to find the most relevant documents to a given question using TF-IDF vectorization and cosine similarity. The example demonstrates finding relevant documents for a sample question.
+
+Step 10: Answering Questions Using BERT
+
+from transformers import BertTokenizer, BertForQuestionAnswering
+import torch
+
+def answer_question(question, answer_text):
+    tokenizer = BertTokenizer.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
+    inputs = tokenizer.encode_plus(question, answer_text, max_length=512, truncation=True, return_tensors="pt")
+    input_ids = inputs['input_ids']
+    token_type_ids = inputs['token_type_ids']
+
+    sep_index = input_ids[0].tolist().index(tokenizer.sep_token_id)
+    num_seg_a = sep_index + 1
+    num_seg_b = len(input_ids[0]) - num_seg_a
+    segment_ids = [0] * num_seg_a + [1] * num_seg_b
+
+    model = BertForQuestionAnswering.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
+    outputs = model(input_ids, token_type_ids=token_type_ids)
+    start_logits = outputs.start_logits
+    end_logits = outputs.end_logits
+
+    answer_start = torch.argmax(start_logits)
+    answer_end = torch.argmax(end_logits)
+    tokens = tokenizer.convert_ids_to_tokens(input_ids[0])
+    answer = tokens[answer_start]
+    for i in range(answer_start + 1, answer_end + 1):
+        if tokens[i][0:2] == '##':
+            answer += tokens[i][2:]
+        else:
+            answer += ' ' + tokens[i]
+
+    return answer
+
+question = "What is the capital of France?"
+answer_text = "Paris is the capital and largest city of France."
+answer = answer_question(question, answer_text)
+print("Answer:", answer)
+
+Purpose: Define a function to answer questions using a pre-trained BERT model. The function tokenizes the input question and text, runs them through the BERT model, and reconstructs the answer from the model's output. The example demonstrates answering a simple factual question.
+
+Summary
+Data Loading and Preparation: The code starts by loading and preparing JSON data into a DataFrame for easier manipulation.
+Filtering and Cleaning: It filters the data based on relevant keywords and cleans the text data to ensure consistency and remove noise.
+Document Segmentation: The long documents are segmented to fit the token limits required by models like BERT.
+Finding Relevant Documents: The TF-IDF and cosine similarity methods are used to find documents most relevant to a given question.
+Question Answering: The final step uses a pre-trained BERT model to answer questions based on the provided text.
+This workflow integrates several key steps in NLP processing, from data cleaning and filtering to advanced model usage for information retrieval and question answering.
