@@ -1,0 +1,6 @@
+pandas
+numpy
+nltk
+spacy
+matplotlib
+dateutil
