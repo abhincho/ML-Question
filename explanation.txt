@@ -1,0 +1,19 @@
+I have done first part of the Q1 and since there is mentioned that I need to attempt any of 2 so I just did first one, and below is the explanation
+of the same step by step:
+
+1. Data Loading and Preprocessing
+First, we load the JSON file containing the news articles. Since the data might contain special characters and extra spaces,
+we need to clean it up.
+2. Filtering Relevant Articles
+To ensure our QA system focuses on the Israel-Hamas war, we filter out irrelevant articles. We define a list of keywords related 
+to the conflict and keep only those articles that contain these keywords.
+3. Load a Pre-trained QA Model
+We use a pre-trained QA model from Hugging Face's Transformers library. In this case, we choose the distilbert-base-uncased-distilled-squad
+model for its efficiency and accuracy in question answering tasks.
+4. Augment Context with Wikipedia
+To enhance the context available for the QA system, we fetch additional information from Wikipedia. This step helps provide a more 
+comprehensive background for the QA model.
+5. Combine Context
+We combine the filtered articles with the Wikipedia context. This combined context is then used by the QA model to answer questions.
+6. Answer Questions
+Finally, we create a function that uses the combined context to answer a given question.
