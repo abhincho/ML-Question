@@ -1,0 +1,5 @@
+jasonlines
+simpletransformers "transformers==4.30.2"
+logging 
+QuestionAnsweringModel
+QuestionAnsweringArgs

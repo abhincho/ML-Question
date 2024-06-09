@@ -1,0 +1,11 @@
+1. The issue with the given dataset was the incorrect format - articleBody:, dateModified:, scrapedDate:, source:, title:
+
+2. For a question answer model, we need to have the dataset in the format -  context:, qas:
+
+3. Thus the given dataset - news.article.json first needs to be converted to the appropriate format --> qa_dataset.json which has further been altered to transformed_qa_dataset.json to add "id" for model implementation
+
+4. We then split this file into - train.json and test.json
+
+5. For the purpose of building the model I've used BERT
+
+6. I've used google colab - t4 gpu for training purpose
