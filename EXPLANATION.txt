@@ -1,0 +1,25 @@
+Importing Libraries:
+I started by importing the necessary libraries. In this case, I noticed the code was dealing with data manipulation, JSON file handling, natural language processing, clustering, and timing operations. Therefore, I imported libraries such as pandas for data manipulation, json for JSON file handling, spaCy for NLP tasks, tqdm for progress bars, numpy for numerical operations, scikit-learn for clustering, and time for timing operations.
+
+Reading JSON Data:
+The code defines a function json_to_dataframe() to read JSON data from a file and convert it into a pandas DataFrame. It iterates over the JSON data, extracts specific fields (such as title, date, description, source), and creates a DataFrame.
+
+NLP Processing:
+After loading the JSON data into a DataFrame, the code utilizes spaCy for NLP tasks. It loads the English language model and iterates over the titles in the DataFrame. For each title, it processes the text using spaCy and stores the resulting vectors.
+
+Clustering:
+Next, the code performs clustering using DBSCAN (Density-Based Spatial Clustering of Applications with Noise). It iterates over a range of epsilon values, performs clustering on the vectors obtained from spaCy, and stores the number of clusters for each epsilon value.
+
+Data Manipulation:
+After clustering, the code merges the clustering results with the original DataFrame and performs some additional data manipulations. It converts the 'date' column to datetime format, sets display options, and selects specific columns for display.
+
+Elapsed Time Calculation:
+The code measures the elapsed time for certain operations using the time library. It starts a timer, performs operations such as sorting the DataFrame, filtering data, and concatenating columns, and then calculates the elapsed time.
+
+Timeline Extraction:
+Finally, the code defines functions to extract timeline periods from titles based on specific keywords. It iterates over the DataFrame, identifies periods based on keywords indicating the start or end of an event, and constructs a timeline.
+
+Plotting the Timeline:
+Once the timeline is constructed, the code provides a function to plot it using matplotlib. It iterates over the timeline periods, plots them on a graph, labels the axes, and displays the plot.
+
+For the explanation of code, there are various comments which will make it easy to understand each block line by line.
