@@ -1,0 +1,7 @@
+# Classfication of articels into Israel - hamas war and not Israel Hamas war
+1. filtering based on presence of israel , hamas or war in description
+# Ranking of articels
+1. after Grouping By date i have used gpt-neo-125M to rank the articels present that day
+2. i have tried different promts to generate
+3. i have tried few - shot learning on smaller scale improving few - shot model will give better results due to time constrain i have gone with a direct promt
+# from top ranks identify import events and create plot
