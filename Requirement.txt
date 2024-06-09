@@ -1,0 +1,29 @@
+We need 8 Python Package to run the code Successfully.
+
+1. json: Included in Python's standard library.
+
+2. re: Included in Python's standard library.
+
+3. nltk: Natural Language Toolkit. Used for tokenization.
+       - !pip3 install nltk
+
+        : After installation, you may need to download additional resources using NLTK:
+        - import nltk
+         nltk.download('punkt')
+
+4. tqdm: Progress bar library for visualizing progress during loops.
+        - pip install tqdm
+
+5. rank_bm25: BM25 algorithm implementation for information retrieval.
+            - pip install rank-bm25
+
+6. transformers: Hugging Face Transformers library, used for question answering.
+                - pip install transformers
+
+7. wikipedia-api: Wikipedia API library.
+                 - pip install wikipedia-api
+
+8. time: Part of Python's standard library.
+
+
+
