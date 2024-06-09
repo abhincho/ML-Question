@@ -1,0 +1,12 @@
+accelerate==0.21.0
+bitsandbytes==0.40.0
+einops==0.6.1
+sentence_transformers
+langchain-community
+langchain
+torch
+numpy 
+pandas
+transformers
+streamlit
+sentencepiece
