@@ -1,0 +1,10 @@
+My thinking and approach was to first observe the structure of json file and then I proceeded to remove unnecessary spaces and punctuations from the 'articleBody' of each record. Also I filtered out any articles that were not relevant to the topic.
+
+Then I continued by identification of stop words from asked questions in order to find important keywords. After finding keywords from question I look for the presence of the keywords in title of articles to filter them specific to the question.
+
+Then I use RoBERTa pretraining approach to find out answer.
+
+The model is slow and many a times even generates inaccurate answers. I'm still in my learning phase and this is the best I could perform with my current knowledge level.
+
+Regards
+Sanyog Mishra
