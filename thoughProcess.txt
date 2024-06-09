@@ -1,0 +1,15 @@
+This project involves processing a collection of news articles to extract relevant events related to specific keywords. The process includes downloading the articles, cleaning the text, summarizing titles, identifying relevant articles, performing named entity recognition (NER), and creating a timeline of events. The final output is a tabulated summary of events occurring on different dates.
+
+To set up the environment and install the necessary packages, run the following command:  !pip install gdown transformers tabulate
+
+Next, we summarize the titles of the articles using the BART model from the Hugging Face transformers library. This helps in creating a concise summary of the article titles.
+
+We use a BERT model fine-tuned on the CoNLL-03 dataset to perform NER on the cleaned text of the relevant articles. This helps in identifying entities (events) within the text.
+
+We create a timeline of events by extracting dates from the articles and associating events with these dates. The timeline is then summarized and displayed in a tabulated format.
+
+This project showcases the process of downloading, cleaning, summarizing, and analyzing news articles to extract relevant events and create a timeline. The approach uses various NLP techniques, including text cleaning, summarization, and named entity recognition, to process and analyze the articles efficiently.
+
+Models used:
+1 facebook/bart-large-cnn
+2 dbmdz/bert-large-cased-finetuned-conll03-english
