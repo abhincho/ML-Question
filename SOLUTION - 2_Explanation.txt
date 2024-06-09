@@ -1,0 +1,87 @@
+SOLUTION - 2
+
+Package Requiremrnts:
+
+1. rank-bm25==0.2.1
+2. transformers==4.12.0
+3. torch==1.10.0
+
+1. rank-bm25` (rank_bm25):
+   - This package is used to implement the BM25 algorithm, which is a ranking function used to retrieve documents relevant to a given query.
+   - In the code, it's used to rank documents based on their relevance to the user's query about the Israel-Hamas conflict.
+
+2. transformers:
+   - This package provides an easy-to-use interface to work with various transformer-based models, such as BERT.
+   - In the code, it's used to load the BERT model for question-answering tasks and to tokenize input text.
+
+3. torch:
+   - This package provides the core functionality for deep learning with PyTorch.
+   - In the code, it's used to handle tensors and perform operations on the BERT model.
+
+1. BM25 Ranking:
+   - The script starts by importing `rank_bm25.BM25Okapi` to implement the BM25 algorithm for document ranking.
+   - It tokenizes the corpus of articles related to the Israel-Hamas conflict and uses BM25 to rank them based on relevance to predefined keywords.
+
+2. BERT Question Answering:
+   - The script imports `BertForQuestionAnswering` and `BertTokenizer` from the `transformers` package to perform question-answering tasks using BERT.
+   - It defines a function `answer_question` that takes a question, a list of documents, a tokenizer, and a BERT model, and returns the best answer extracted from the documents.
+
+3. User Interaction:
+   - The script prompts the user to input a question related to the Israel-Hamas conflict.
+   - It retrieves relevant documents using BM25 based on the user's query.
+   - It then uses BERT to answer the user's question based on the retrieved documents and prints the answer.
+
+Explanation:
+
+1. Import Necessary Libraries:
+   - The code starts by importing essential libraries:
+     - `json`: for handling JSON data.
+     - `re`: for regular expressions used in text cleaning.
+     - `BM25Okapi` from `rank_bm25`: for implementing the BM25 algorithm.
+     - `pipeline` from `transformers`: for question-answering tasks.
+     - `torch`: for tensor operations.
+
+2. Read Data:
+   - It reads data from a JSON file named `'news.article.json'` containing articles related to the Israel-Hamas conflict.
+
+3. Text Cleaning:
+   - It defines a function `clean_text` to clean the text by removing extra spaces and non-alphanumeric characters.
+
+4. Preprocessing:
+   - It preprocesses the articles:
+     - It extracts the `'articleBody'` from each article and converts it to lowercase.
+     - It assigns the cleaned content to the `'content'` key in each article dictionary.
+
+5. Keyword Matching:
+   - It defines a list of keywords related to the Israel-Hamas conflict.
+   - It filters the articles based on whether they contain any of these keywords in their content.
+
+6. BM25 Ranking:
+   - It tokenizes the content of filtered articles and uses BM25 to rank them based on their relevance to the keywords.
+
+7. BERT Question Answering Setup:
+   - It initializes a BERT model for question-answering using `BertForQuestionAnswering` and `BertTokenizer`.
+
+8. Define Answering Function:
+   - It defines a function `answer_question` to extract the best answer to a given question from a list of documents using the BERT model.
+
+9. Retrieve Relevant Documents:
+   - It prompts the user to input a question related to the Israel-Hamas conflict.
+   - It retrieves relevant documents using BM25 based on the user's query.
+
+10. Answer the Question:
+   - It answers the user's question using the BERT model and the retrieved documents.
+   - It prints the answer.
+
+Steps:
+
+1. Read articles related to the Israel-Hamas conflict from a JSON file.
+2. Clean and preprocess the text data.
+3. Identify articles relevant to the conflict based on predefined keywords.
+4. Rank relevant articles using the BM25 algorithm.
+5. Initialize a BERT model for question-answering.
+6. Define a function to extract answers from documents using BERT.
+7. Prompt the user for a question related to the conflict.
+8. Retrieve relevant documents based on the user's question using BM25.
+9. Use the BERT model to answer the user's question based on the retrieved documents.
+10. Print the answer to the user.
