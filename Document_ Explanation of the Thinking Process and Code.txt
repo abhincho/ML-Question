@@ -1,0 +1,103 @@
+﻿Document: Explanation of the Thinking Process and Code
+
+
+Introduction
+This document explains the thinking process and code implementation for processing and summarizing articles related to the Israel-Hamas conflict using a pre-trained BERT model for text classification. The primary goal is to extract and summarize relevant articles from a larger dataset, create a timeline, and save the summarized information to a file.
+
+
+1. Loading Pre-trained BERT Model
+A pre-trained BERT model is loaded for zero-shot classification using the pipeline function. This model will help classify the relevance of articles based on specific keywords.
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+
+
+2. Loading Articles
+The load_articles function reads articles from a JSON file.
+
+
+def load_articles(file_path, limit=1000):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        articles = json.load(file)
+    return articles[:limit]
+
+
+3. Checking Article Relevance
+The is_related_bert function uses the BERT model to classify the relevance of an article based on specific keywords: "Israel", "Hamas", "Gaza", "Palestine". It returns True if the classification score exceeds a threshold (0.5).
+
+
+def is_related_bert(article_body):
+    candidate_labels = ["Israel", "Hamas", "Gaza", "Palestine"]
+    result = classifier(article_body, candidate_labels)
+    return any(score > 0.5 for score in result['scores'])
+
+
+
+
+
+
+
+
+
+
+
+
+4. Creating a Timeline
+The create_timeline_bert function processes the loaded articles, checks their relevance, and creates a timeline. Each article's date, title, and a brief description are included in the timeline if it is relevant.
+
+
+def create_timeline_bert(articles, max_entries=100):
+    timeline = []
+    for index, article in enumerate(articles):
+        date = article.get("dateModified", {}).get("$date", "")
+        title = article.get("title", "")
+        description = article.get("articleBody", "").split("\n\n")[0]
+        
+        if date and title and is_related_bert(description):
+            date_formatted = datetime.fromisoformat(date.replace("Z", "+00:00")).strftime("%Y-%m-%d")
+            timeline.append({
+                "date": date_formatted,
+                "title": title,
+                "description": description
+            })
+    timeline.sort(key=lambda x: x["date"])
+    
+    if max_entries and len(timeline) > max_entries:
+        timeline = timeline[:max_entries]
+    
+    return timeline
+
+
+
+
+5. Printing and Saving the Timeline
+The print_timeline function prints the timeline to the console for verification, and the save_timeline function saves the timeline to a text file.
+def print_timeline(timeline):
+    for entry in timeline:
+        print(f"{entry['date']}: {entry['title']} - {entry['description']}")
+
+
+def save_timeline(timeline, file_path):
+    with open(file_path, 'w', encoding='utf-8') as output_file:
+        for entry in timeline:
+            output_file.write(f"{entry['date']}: {entry['title']} - {entry['description']}\n")
+
+
+6. Main Function
+The main function orchestrates the entire process:
+* Loading articles from a specified file path.
+* Creating a timeline of relevant articles.
+* Printing the timeline to the console.
+* Saving the timeline to a file.
+
+
+
+
+def main():
+    file_path = r'C:\Users\email\Downloads\yutr.json'
+    articles = load_articles(file_path, limit=1000)  # Limit to 1000 articles
+    timeline = create_timeline_bert(articles, max_entries=100)  # Adjust max_entries as needed
+    print_timeline(timeline)
+    save_timeline(timeline, 'timeline_summarization.txt')
+
+
+if __name__ == "__main__":
+    main()
