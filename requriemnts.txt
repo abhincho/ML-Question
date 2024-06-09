@@ -1,0 +1,11 @@
+spacy
+keybert
+tf-keras
+transformers
+nltk
+json
+numpy
+pandas
+scikit-learn
+matplotlib
+tqdm
