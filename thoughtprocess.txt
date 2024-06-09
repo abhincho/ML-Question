@@ -1,0 +1,9 @@
+After loading the JSON file, we examined its contents and identified attributes like 'articleBody' in each dictionary entry. Some news clippings contained irrelevant content or odd symbols, so we aimed to filter them out. We analyzed the 'articleBody' to select relevant articles by searching for keywords related to the Israel-Hamas conflict, such as "israel," "hamas," "war," etc. The code was designed to keep articles containing at least two of these keywords.
+
+Regarding dates, we noticed two types: modified date and scraped date. As the scraped date sometimes lagged, potentially causing inaccuracies in the timeline, we focused on the modified date.
+
+Next, we performed preliminary cleaning of the paragraphs by removing non-printable characters, punctuation, and special characters. Stop words were considered for removal, but we decided to prioritize major words.
+
+We then converted the cleaned paragraphs into word embeddings using the Spacy pre-trained word embedding model (en_core_web_lg). This model averages word embeddings to generate sentence embeddings, simplifying the process. Clustering algorithms were applied to classify sentences into clusters, with cluster 24 showing relevance to major events in the Israel-Hamas conflict.
+
+Finally, we plotted the DataFrame to visualize the timeline. Depending on your requirements, you can select appropriate clusters for detailed timelines.
