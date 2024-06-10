@@ -1,0 +1,44 @@
+Timeline Summarization of Israel-Hamas War
+Objective: The goal is to generate a timeline summarization of the major events in the Israel-Hamas war using news articles collected over a period.
+
+Steps:
+
+Downloading Dataset:
+
+The dataset containing news articles is downloaded from a Google Drive link using the gdown package.
+We specify the file ID and destination path for the downloaded JSON file.
+
+
+Load and Parse JSON Data:
+
+The JSON file is loaded into memory, articles are extracted for processing to make the summarization process more manageable.
+
+
+Filter Relevant Articles:
+
+Articles related to the Israel-Hamas war are filtered using a keyword search. Articles containing the keyword in their body or title are considered relevant.
+
+
+Summarization Using BART:
+
+The BART model from the transformers library is used to summarize the text of each article.
+The BART model is initialized with the facebook/bart-large-cnn pre-trained weights.
+
+
+Generate Timeline:
+
+Articles are grouped by their modification dates to form a timeline of events.
+Summaries for articles within the same date are concatenated and summarized as a single block to represent the event for that date.
+
+
+Print Timeline:
+
+The summarized events are printed in a timeline format, showing the start and end dates along with a summary description.
+
+
+Code Execution:
+
+The script is executed from the main function. It downloads the data, filters relevant articles, summarizes them, generates a timeline, and prints the results.
+
+
+
