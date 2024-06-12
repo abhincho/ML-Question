@@ -1,0 +1,50 @@
+The following code builds a question-answering system using LangChain, a framework to build applications with
+large language models. The system has been trained on a JSON file composed of news articles and can be used to
+answer queries posed within the context of the articles.
+
+1. Importing Required Libraries:
+   The notebook begins by importing the necessary libraries, which include `json`, for reading JSON files,
+   `torch` and `transformers`, which are used to handle the pre-trained language model, and several modules
+   from LangChain and LangChain-community, which will be used to create the question-answering system.
+
+2. Loading and Preprocessing Data:
+   The code will load the JSON file `news_article.json` and then extract the information from each article — that is,
+   the title and the article itself. It creates a list of `Document` objects, where each document represents an article.
+
+   The `chunk_text` helper function is defined in order to be able to chunk text to smaller units. This is due to the
+   fact that some language models can only take in text of a certain maximum length and also it makes it easier to generate
+   the embedding faster.
+
+   The `HuggingFaceBgeEmbeddings` is initialized. It transforms text into a more dense vector representation (embeddings)
+   using the pre-trained language model.
+
+3. Creating a Vector Store:
+   This block of code creates a vector store using the library FAISS, which is a library for efficient similarity search 
+   and vector storage. The `FAISS.from_documents` function takes in the list of `Document` objects and the embeddings model 
+   (`huggingface_embeddings`) and creates a vector store. This vector store will be used for efficient retrieval of relevant 
+   documents based on a given query.
+
+4. Initializing the Language Model:
+   The notebook initiates the language model, which can be used to generate answers. In this case, the `ChatGroq` model is from 
+   LangChain-community, which is a wrapper around the Groq AI service. This creates an instance of the `ChatGroq` model 
+   initialized with an API key and the name of the language model (`Llama3-8b-8192`).
+
+5. Creating the Question-Answering Chain:
+   The code creates a `RetrievalQA` chain, which is a combination of a retriever, the vector store being made, and a 
+   language model. Here, it creates a chain by calling `RetrievalQA.from_chain_type` with the language model (`llm`), 
+   the chain type (`\"stuff\"`), and the retriever (`vector_store.as_retriever()`).
+
+6. Asking Questions and Getting Answers:
+   It shows how to ask questions and get answers from the question-answering system. It prompts the user for a question, 
+   runs the `qa.run` method with the question, and prints the generated answer.
+
+   In this case, it asks the question \"What happened at the Al-Shifa Hospital?\" and receives a system-generated answer 
+   from the articles provided.
+
+   Ask the question \"Tell me something about Yemen air strikes in 2024\", and the system summarizes relevant information 
+   on the US–British air strikes in Yemen and the reaction by the Yemeni armed forces.
+
+In essence, this code has the thought process of leveraging large language model and vector embedding capabilities to create 
+a question-answering system that can derive relevant information from a document corpus and generate user query natural 
+language answers. LangChain, with pre-trained language models, vector stores, and combination, allows the retrieval and 
+processing of information to be done more efficiently so that accurate and contextual answers are available.
